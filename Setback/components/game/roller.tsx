@@ -12,7 +12,7 @@ export default function Roller() {
     //return Math.floor(Math.random() * 6);
     Animated.timing(rotation, {
       toValue: 1, // 1 full turn
-      duration: 1000, // 1 second
+      duration: 750, // 1 second
       useNativeDriver: true,
     }).start(() => {
       rotation.setValue(0); // reset for next click
@@ -25,6 +25,11 @@ export default function Roller() {
     outputRange: ['0deg', '360deg'],
   });
 
+  const opacityInterpolate = rotation.interpolate({
+    inputRange: [0, 0.00001, 1],
+    outputRange: [1, 0, 1]
+  });
+
   const animatedStyle = {
     transform: [{ rotate: rotateInterpolate }],
   };
@@ -33,12 +38,13 @@ export default function Roller() {
     <View style={rollerStyle.container}>
       <Animated.View style={animatedStyle}>
         <Pressable style={rollerStyle.button} onPress={roller}>
-          <Text style={rollerStyle.text}>{buttonText}</Text>
+          <Animated.Text style={[rollerStyle.text, { opacity: opacityInterpolate }]}>{buttonText}</Animated.Text>
         </Pressable>
       </Animated.View>
     </View>
   )
 }
+// <Text style={rollerStyle.text}>{buttonText}</Text>
 
 const rollerStyle = StyleSheet.create({
   container: {
