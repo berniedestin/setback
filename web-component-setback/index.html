@@ -10,40 +10,194 @@
         <main>
             <h1>Setback</h1>
             <div id="grid-layout">
+                <!-- --
                 <grid-box area="rdhm" color="red"></grid-box>
-                <grid-box area="blhm" color="blue"></grid-box>
                 <grid-box area="gnhm" color="green"></grid-box>
+                <grid-box area="blhm" color="blue"></grid-box>
                 <grid-box area="ylhm" color="gold"></grid-box>
+                -->
                 <dice-roller area="roll"></dice-roller>
 
-                <travel-space area="t001"></travel-space>
-                <travel-space area="t002"></travel-space>
-                <travel-space area="t003"></travel-space>
-                <travel-space area="t004"></travel-space>
-                <travel-space area="t005"></travel-space>
-                <travel-space area="t006"></travel-space>
-                <travel-space area="t007"></travel-space>
-                <travel-space area="t008"></travel-space>
-                <travel-space area="t009"></travel-space>
-                <travel-space area="t010"></travel-space>
-                <travel-space area="t011"></travel-space>
-                <travel-space area="t012"></travel-space>
-                <travel-space area="t013"></travel-space>
-                <travel-space area="t014"></travel-space>
-                <travel-space area="t015"></travel-space>
-                <travel-space area="t016"></travel-space>
-                <travel-space area="t017"></travel-space>
-                <travel-space area="t018"></travel-space>
-                <travel-space area="t019"></travel-space>
-                <travel-space area="t020"></travel-space>
-                <travel-space area="t021"></travel-space>
-                <travel-space area="t022"></travel-space>
-                <travel-space area="t023"></travel-space>
-                <travel-space area="t024"></travel-space>
-                <travel-space area="t025"></travel-space>
-                <travel-space area="t026"></travel-space>
-                <travel-space area="t027"></travel-space>
-                <travel-space area="t028"></travel-space>
+                <travel-space area="t001" occupied="white"></travel-space>
+                <travel-space area="t002" occupied="white"></travel-space>
+                <travel-space area="t003" occupied="white"></travel-space>
+                <travel-space area="t004" occupied="white"></travel-space>
+                <travel-space area="t005" occupied="white"></travel-space>
+                <travel-space area="t006" occupied="white"></travel-space>
+                <travel-space area="t007" occupied="white"></travel-space>
+                <travel-space area="t008" occupied="white"></travel-space>
+                <travel-space area="t009" occupied="white"></travel-space>
+                <travel-space area="t010" occupied="white"></travel-space>
+                <travel-space area="t011" occupied="white"></travel-space>
+                <travel-space area="t012" occupied="white"></travel-space>
+                <travel-space area="t013" occupied="white"></travel-space>
+                <travel-space area="t014" occupied="white"></travel-space>
+                <travel-space area="t015" occupied="white"></travel-space>
+                <travel-space area="t016" occupied="white"></travel-space>
+                <travel-space area="t017" occupied="white"></travel-space>
+                <travel-space area="t018" occupied="white"></travel-space>
+                <travel-space area="t019" occupied="white"></travel-space>
+                <travel-space area="t020" occupied="white"></travel-space>
+                <travel-space area="t021" occupied="white"></travel-space>
+                <travel-space area="t022" occupied="white"></travel-space>
+                <travel-space area="t023" occupied="white"></travel-space>
+                <travel-space area="t024" occupied="white"></travel-space>
+                <travel-space area="t025" occupied="white"></travel-space>
+                <travel-space area="t026" occupied="white"></travel-space>
+                <travel-space area="t027" occupied="white"></travel-space>
+                <travel-space area="t028" occupied="white"></travel-space>
+
+                <home-space area="rh01" occupied="red" owner="red"></home-space>
+                <home-space area="rh02" occupied="red" owner="red"></home-space>
+                <home-space area="rh03" occupied="red" owner="red"></home-space>
+                <home-space area="rh04" occupied="red" owner="red"></home-space>
+
+                <home-space
+                    area="gh01"
+                    occupied="green"
+                    owner="green"
+                ></home-space>
+                <home-space
+                    area="gh02"
+                    occupied="green"
+                    owner="green"
+                ></home-space>
+                <home-space
+                    area="gh03"
+                    occupied="green"
+                    owner="green"
+                ></home-space>
+                <home-space
+                    area="gh04"
+                    occupied="green"
+                    owner="green"
+                ></home-space>
+
+                <home-space
+                    area="yh01"
+                    occupied="yellow"
+                    owner="yellow"
+                ></home-space>
+                <home-space
+                    area="yh02"
+                    occupied="yellow"
+                    owner="yellow"
+                ></home-space>
+                <home-space
+                    area="yh03"
+                    occupied="yellow"
+                    owner="yellow"
+                ></home-space>
+                <home-space
+                    area="yh04"
+                    occupied="yellow"
+                    owner="yellow"
+                ></home-space>
+
+                <home-space
+                    area="bh01"
+                    occupied="blue"
+                    owner="blue"
+                ></home-space>
+                <home-space
+                    area="bh02"
+                    occupied="blue"
+                    owner="blue"
+                ></home-space>
+                <home-space
+                    area="bh03"
+                    occupied="blue"
+                    owner="blue"
+                ></home-space>
+                <home-space
+                    area="bh04"
+                    occupied="blue"
+                    owner="blue"
+                ></home-space>
+
+                <victory-space
+                    area="rv01"
+                    occupied="white"
+                    owner="red"
+                ></victory-space>
+                <victory-space
+                    area="rv02"
+                    occupied="white"
+                    owner="red"
+                ></victory-space>
+                <victory-space
+                    area="rv03"
+                    occupied="white"
+                    owner="red"
+                ></victory-space>
+                <victory-space
+                    area="rv04"
+                    occupied="white"
+                    owner="red"
+                ></victory-space>
+
+                <victory-space
+                    area="gv01"
+                    occupied="white"
+                    owner="green"
+                ></victory-space>
+                <victory-space
+                    area="gv02"
+                    occupied="white"
+                    owner="green"
+                ></victory-space>
+                <victory-space
+                    area="gv03"
+                    occupied="white"
+                    owner="green"
+                ></victory-space>
+                <victory-space
+                    area="gv04"
+                    occupied="white"
+                    owner="green"
+                ></victory-space>
+
+                <victory-space
+                    area="yv01"
+                    occupied="white"
+                    owner="yellow"
+                ></victory-space>
+                <victory-space
+                    area="yv02"
+                    occupied="white"
+                    owner="yellow"
+                ></victory-space>
+                <victory-space
+                    area="yv03"
+                    occupied="white"
+                    owner="yellow"
+                ></victory-space>
+                <victory-space
+                    area="yv04"
+                    occupied="white"
+                    owner="yellow"
+                ></victory-space>
+
+                <victory-space
+                    area="bv01"
+                    occupied="white"
+                    owner="blue"
+                ></victory-space>
+                <victory-space
+                    area="bv02"
+                    occupied="white"
+                    owner="blue"
+                ></victory-space>
+                <victory-space
+                    area="bv03"
+                    occupied="white"
+                    owner="blue"
+                ></victory-space>
+                <victory-space
+                    area="bv04"
+                    occupied="white"
+                    owner="blue"
+                ></victory-space>
                 <!-- --
                 <grid-box area="side" color="steelblue"></grid-box>
 

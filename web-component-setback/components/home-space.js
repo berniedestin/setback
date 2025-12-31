@@ -20,6 +20,7 @@ template.innerHTML = `
       border-radius: 50%;
       border: 2px black solid;
       background-color: var(--background-color,white);
+      box-shadow: 0px 0px 0.5rem 0.1rem var(--shadow-color);
     }
   </style>
   <div class="container">
@@ -27,7 +28,7 @@ template.innerHTML = `
   </div>
 `;
 
-class TravelSpace extends HTMLElement {
+class HomeSpace extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -42,14 +43,15 @@ class TravelSpace extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["area", "occupied"];
+    return ["area", "occupied", "owner"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "area") this.style.setProperty("--grid-area", newValue);
     if (name === "occupied")
       this.style.setProperty("--background-color", newValue);
+    if (name === "owner") this.style.setProperty("--shadow-color", newValue);
   }
 }
 
-customElements.define("travel-space", TravelSpace);
+customElements.define("home-space", HomeSpace);

@@ -7,22 +7,22 @@
 #grid-layout {
     display: grid;
     grid-template-areas:
-        ".    .    .    .    .    .    rdhm rdhm rdhm rdhm .    .    .    .    .    .   "
+        ".    .    .    .    .    .    rh04 rh03 rh02 rh01 .    .    .    .    .    .   "
         ".    .    .    .    .    .    .    t028 t001 .    .    .    .    .    .    .   "
-        ".    .    .    .    .    .    t027 .    .    t002 .    .    .    .    .    .   "
-        ".    .    .    .    .    t026 .    .    .    .    t003 .    .    .    .    .   "
-        ".    .    .    .    t025 .    .    .    .    .    .    t004 .    .    .    .   "
-        ".    .    .    t024 .    .    .    .    .    .    .    .    t005 .    .    .   "
-        "blhm .    t023 .    .    .    roll roll roll roll .    .    .    t006 .    gnhm"
-        "blhm t022 .    .    .    .    roll roll roll roll .    .    .    .    t007 gnhm"
-        "blhm t021 .    .    .    .    roll roll roll roll .    .    .    .    t008 gnhm"
-        "blhm .    t020 .    .    .    roll roll roll roll .    .    .    t009 .    gnhm"
-        ".    .    .    t019 .    .    .    .    .    .    .    .    t010 .    .    .   "
-        ".    .    .    .    t018 .    .    .    .    .    .    t011 .    .    .    .   "
-        ".    .    .    .    .    t017 .    .    .    .    t012 .    .    .    .    .   "
-        ".    .    .    .    .    .    t016 .    .    t013 .    .    .    .    .    .   "
+        ".    .    .    .    .    .    t027 rv01 .    t002 .    .    .    .    .    .   "
+        ".    .    .    .    .    t026 .    rv02 .    .    t003 .    .    .    .    .   "
+        ".    .    .    .    t025 .    .    rv03 .    .    .    t004 .    .    .    .   "
+        ".    .    .    t024 .    .    .    rv04 .    .    .    .    t005 .    .    .   "
+        "bh01 .    t023 .    .    .    roll roll roll roll .    .    .    t006 .    gh04"
+        "bh02 t022 .    .    .    .    roll roll roll roll gv04 gv03 gv02 gv01 t007 gh03"
+        "bh03 t021 bv01 bv02 bv03 bv04 roll roll roll roll .    .    .    .    t008 gh02"
+        "bh04 .    t020 .    .    .    roll roll roll roll .    .    .    t009 .    gh01"
+        ".    .    .    t019 .    .    .    .    yv04 .    .    .    t010 .    .    .   "
+        ".    .    .    .    t018 .    .    .    yv03 .    .    t011 .    .    .    .   "
+        ".    .    .    .    .    t017 .    .    yv02 .    t012 .    .    .    .    .   "
+        ".    .    .    .    .    .    t016 .    yv01 t013 .    .    .    .    .    .   "
         ".    .    .    .    .    .    .    t015 t014 .    .    .    .    .    .    .   "
-        ".    .    .    .    .    .    ylhm ylhm ylhm ylhm .    .    .    .    .    .   ";
+        ".    .    .    .    .    .    yh01 yh02 yh03 yh04 .    .    .    .    .    .   ";
     grid-template-columns: repeat(16, 1fr);
     grid-template-rows: repeat(16, 1fr);
     gap: 10px;

@@ -1,6 +1,8 @@
 import "./components/grid-box.js";
 import "./components/dice-roller.js";
 import "./components/travel-space.js";
+import "./components/home-space.js";
+import "./components/victory-space.js";
 // LAYOUT 16x16:
 //
 //       HHHH
