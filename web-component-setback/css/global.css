@@ -38,7 +38,9 @@ main {
     gap: 10px;
     width: 600px;
     height: 600px;
+    /*
     border: 2px solid #333;
+    */
 }
 
 #turn-button {
