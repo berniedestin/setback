@@ -42,28 +42,41 @@ class DiceRoller extends HTMLElement {
 
     // Internal state
     this._active = false;
+    this._currentRoll = 6;
 
     // Elements
     this.$container = this.shadowRoot.querySelector(".container");
     this.$button = this.shadowRoot.querySelector("#action-btn");
   }
+  get diceRoll() {
+    return this._currentRoll;
+  }
   connectedCallback() {
     // Add event listener for click/press
-    this.$button.addEventListener("click", () => this.toggleState());
+    this.$button.addEventListener("click", () => this.roll());
   }
+  roll() {
+    this._currentRoll = Math.floor(Math.random() * 6) + 1;
 
-  toggleState() {
     this._active = !this._active;
-    let roll = Math.floor(Math.random() * 6) + 1;
 
     if (this._active) {
       this.$container.classList.add("rotated");
-      this.$button.textContent = `${roll}`;
+      this.$button.textContent = `${this._currentRoll}`;
     } else {
       this.$container.classList.remove("rotated");
-      this.$button.textContent = `${roll}`;
+      this.$button.textContent = `${this._currentRoll}`;
     }
+
+    this.dispatchEvent(
+      new CustomEvent("dice-rolled", {
+        detail: { value: this._currentNumber },
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
+
   static get observedAttributes() {
     return ["area"];
   }

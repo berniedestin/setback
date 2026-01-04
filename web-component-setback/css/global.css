@@ -4,6 +4,16 @@
     font-family: "Funnel Display", sans-serif;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title {
+    font-size: 5rem;
+    font-weight: bold;
+}
+
 #grid-layout {
     display: grid;
     grid-template-areas:
@@ -29,4 +39,19 @@
     width: 600px;
     height: 600px;
     border: 2px solid #333;
+}
+
+#turn-button {
+    background-color: white;
+    border: 2px black solid;
+    border-radius: 1rem;
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    margin: 1rem;
+    cursor: pointer;
+}
+#turn-button:hover,
+#turn-button:active {
+    background-color: ghostwhite;
 }

@@ -3,6 +3,21 @@ import "./components/dice-roller.js";
 import "./components/travel-space.js";
 import "./components/home-space.js";
 import "./components/victory-space.js";
+
+const turnButton = document.getElementById("turn-button");
+const diceRoller = document.querySelector("dice-roller");
+
+const container = document.querySelector("main");
+
+turnButton.addEventListener("click", () => {
+  diceRoller.roll();
+  let roll = diceRoller.diceRoll;
+
+  // test roll functionality
+  const newParagraph = document.createElement("p");
+  newParagraph.textContent = `Rolled: ${roll}`;
+  container.appendChild(newParagraph);
+});
 // LAYOUT 16x16:
 //
 //       HHHH
