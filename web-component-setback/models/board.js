@@ -5,7 +5,9 @@ export class Board {
     this.homeSpaces = document.querySelectorAll("home-space");
     this.victorySpaces = document.querySelectorAll("victory-space");
     this.travelSpaces = document.querySelectorAll("travel-space");
-    this.diceRoller = document.querySelector("dice-roller"); // Maybe should be in board
+    this.diceRoller = document.querySelector("dice-roller");
+
+    this.turnOptions = document.querySelector("turn-options");
 
     this._redStart = 1;
     this._greenStart = 8;
@@ -18,6 +20,8 @@ export class Board {
     this._blueVictory = 21;
 
     this.isWinner = false;
+    this.isGameStarted = false;
+    this.currentPlayer = "red";
   }
   homeCount(color) {
     let count = 0;
