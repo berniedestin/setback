@@ -41,7 +41,9 @@ container.addEventListener("dice-rolled", (e) => {
     console.log("somehow we left early");
     return;
   }
-  board.turnOptions.playerMessage(`You rolled: ${board.diceRoller.diceRoll}`);
+  board.turnOptions.playerMessage(
+    `You rolled: ${board.diceRoller.diceRoll}| HomeCountRed: ${board.victoryCount("red")}`,
+  );
   // present player with choices, generate with Board, display in TurnOptions
   // It would be nice to disable the ability to roll the dice until the player has made a selection
 });

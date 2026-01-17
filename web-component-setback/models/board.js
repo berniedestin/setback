@@ -41,12 +41,15 @@ export class Board {
     });
     return count;
   }
-  takeTurn(player, canRollAgain) {
-    // roll dice
+  getOptions(player, diceRoll, canRollAgain) {
+    let choices = [];
     //
     // present choices? as TurnResult.choices array
     //
     // if 1 or 6 and have full home row and empty inital space, put one out
+    if ((diceRoll == 6 || diceRoll == 1) && homeCount(player) > 0) {
+      choices.push({ from: "home", to: 1 });
+    }
     // if land on occupied space, will send color back home
     //
     // if 6 and firstRoll, roll again
