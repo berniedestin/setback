@@ -58,6 +58,12 @@ class TravelSpace extends HTMLElement {
       this._spaceNumber == 25
     );
   }
+  get currentColor() {
+    this.occupied;
+  }
+  changeColor(color) {
+    this.style.setProperty("--background-color", color);
+  }
 
   static get observedAttributes() {
     return ["area", "occupied"];

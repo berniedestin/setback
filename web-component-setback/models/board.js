@@ -41,18 +41,29 @@ export class Board {
     });
     return count;
   }
-  getOptions(player, diceRoll, canRollAgain) {
+  removeFromHome(color) {
+    // logic to remove one from color's home
+    // code that calls this function must verify that home row has pieces to move
+  }
+  addToHome(color) {
+    // logic to add piece back to color's home row after being landed on
+    // cod that calls this function must verify that home row is not already full
+  }
+  getOptions(playerColor, diceRoll, canRollAgain) {
     let choices = [];
     //
     // present choices? as TurnResult.choices array
     //
     // if 1 or 6 and have full home row and empty inital space, put one out
-    if ((diceRoll == 6 || diceRoll == 1) && homeCount(player) > 0) {
+    if ((diceRoll == 6 || diceRoll == 1) && homeCount(playerColor) > 0) {
       choices.push({ from: "home", to: 1 });
     }
     // if land on occupied space, will send color back home
     //
     // if 6 and firstRoll, roll again
     // if landed on double space and firstRoll roll again
+  }
+  makeMove(color, turnChoice) {
+    // logic that takes the from and to with the color being
   }
 }
