@@ -58,6 +58,17 @@ class TravelSpace extends HTMLElement {
     this.$circle = this.shadowRoot.querySelector(".circle");
     this.$circle.classList.add("disable-click");
   }
+  connectedCallback() {
+    this.$circle.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("select-piece", {
+          detail: { pieceLocation: "track", spaceNumber: this._spaceNumber },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    });
+  }
   get spaceNumber() {
     return this._spaceNumber;
   }

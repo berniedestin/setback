@@ -39,14 +39,45 @@ container.addEventListener("game-start", (e) => {
 });
 container.addEventListener("next-turn", (e) => {
   if (e.detail.previousPlayer) {
+    board.canRollAgain = true;
+    board.landedOnDouble = false;
     board.diceRoller.enableClick();
     let nextPlayer = board.players.get(e.detail.previousPlayer);
     console.log(
       `Next Turn. Previous Player: ${e.detail.previousPlayer}, Next Player: ${nextPlayer}`,
     );
     board.turnOptions.nextPlayer(nextPlayer);
+    board.currentPlayer = nextPlayer;
   } else {
     console.log(`Something went wrong with the next-turn event. ${e}`);
+  }
+});
+container.addEventListener("select-piece", (e) => {
+  console.log(`Location: ${e.detail.pieceLocation}`);
+  console.log(`Number: ${e.detail.spaceNumber}`);
+  // if location is home, take from home row
+  if (e.detail.pieceLocation == "home") {
+    board.removeFromHome(e.detail.spaceNumber);
+  }
+  // if location is track, do normal movement
+  if (e.detail.pieceLocation == "track") {
+    board.makeMove(e.detail.spaceNumber);
+  }
+
+  // if location is vitory, do special move
+  //
+
+  board.lockAllPieces();
+  // if 6 or double roll, let roll again
+  if (
+    (board.diceRoller.diceRoll == 6 || board.landedOnDouble) &&
+    board.canRollAgain
+  ) {
+    board.diceRoller.enableClick();
+    board.turnOptions.playerMessage(`You can roll again, please roll!`);
+    board.canRollAgain = false;
+  } else {
+    board.turnOptions.activateNextTurnButton();
   }
 });
 container.addEventListener("dice-rolled", (e) => {
