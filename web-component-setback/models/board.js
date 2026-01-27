@@ -21,7 +21,15 @@ export class Board {
 
     this.isWinner = false;
     this.isGameStarted = false;
+
+    this.players = new Map();
+    this.players.set("red", "green");
+    this.players.set("green", "yellow");
+    this.players.set("yellow", "blue");
+    this.players.set("blue", "red");
+
     this.currentPlayer = "red";
+    this.canRollAgain = true;
   }
   homeCount(color) {
     let count = 0;
@@ -49,15 +57,40 @@ export class Board {
     // logic to add piece back to color's home row after being landed on
     // cod that calls this function must verify that home row is not already full
   }
-  getOptions(playerColor, diceRoll, canRollAgain) {
-    let choices = [];
+  getOptions() {
+    //let choices = [];
     //
     // present choices? as TurnResult.choices array
     //
-    // if 1 or 6 and have full home row and empty inital space, put one out
-    if ((diceRoll == 6 || diceRoll == 1) && homeCount(playerColor) > 0) {
-      choices.push({ from: "home", to: 1 });
+
+    // if not 1 or 6 and home row count is 4, then advance to next turn
+    if (
+      this.diceRoller.diceRoll != 6 &&
+      this.diceRoller.diceRoll != 1 &&
+      this.homeCount(this.currentPlayer) == 4
+    ) {
+      //console.log(`Roll: ${this.diceRoller.diceRoll}`);
+      //console.log(`Home Count: ${this.homeCount(this.currentPlayer)}`);
+      // turn options message
+      this.turnOptions.playerMessage(
+        `You rolled: ${this.diceRoller.diceRoll}, you have no moves available!`,
+      );
+      // activate next turn
+      this.turnOptions.activateNextTurnButton();
+      return;
     }
+    // if 1 or 6 and have full home row and empty inital space, put one out
+    if (
+      (this.diceRoller.diceRoll == 6 || this.diceRoller.diceRoll == 1) &&
+      this.homeCount(this.currentPlayer) > 0
+    ) {
+      // allow player to click on occupied spaces in home row
+      this.turnOptions.playerMessage(
+        `You rolled: ${this.diceRoller.diceRoll}, please select a piece to move!`,
+      );
+    }
+
+    //if (this.homeCount(this.currentPlayer) )
     // if land on occupied space, will send color back home
     //
     // if 6 and firstRoll, roll again

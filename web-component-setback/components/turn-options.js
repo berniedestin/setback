@@ -16,7 +16,8 @@ template.innerHTML = `
       font-size:2rem;
       text-shadow: 0px 0px 0.9rem white;
     }
-    #player-message {
+    #player-message,
+    #next-turn {
       display: none;
       font-size:2rem;
     }
@@ -43,6 +44,7 @@ template.innerHTML = `
     <div id="player-name"></div>
     <div id="player-message"></div>
     <div id="begin" class="button">Begin!</div>
+    <div id="next-turn" class="button">Next Turn!</div>
     <div id="options"></div>
   </div>
 `;
@@ -56,22 +58,25 @@ class TurnOptions extends HTMLElement {
     // Internal state
     this._active = false;
     this._gameStart = false;
+    this.currentPlayer = "";
 
     // Elements
     this.$turnOptionsContainer = this.shadowRoot.querySelector("#turn-options");
     this.$playerName = this.shadowRoot.querySelector("#player-name");
     this.$playerMessage = this.shadowRoot.querySelector("#player-message");
     this.$beginButton = this.shadowRoot.querySelector("#begin");
+    this.$nextTurnButton = this.shadowRoot.querySelector("#next-turn");
   }
   connectedCallback() {
     // Add event listener for click/press
     this.$beginButton.addEventListener("click", () => {
       this._gameStart = true;
+      this.currentPlayer = "red";
 
       this.$beginButton.style.display = "none";
 
       this.$playerName.style.display = "block";
-      this.nextPlayer("red");
+      this.nextPlayer(this.currentPlayer);
 
       this.dispatchEvent(
         new CustomEvent("game-start", {
@@ -81,8 +86,26 @@ class TurnOptions extends HTMLElement {
         }),
       );
     });
+    this.$nextTurnButton.addEventListener("click", () => {
+      this.$nextTurnButton.style.display = "none";
+
+      this.dispatchEvent(
+        new CustomEvent("next-turn", {
+          detail: { previousPlayer: this.currentPlayer },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    });
+  }
+  activateNextTurnButton() {
+    this.$nextTurnButton.style.display = "block";
+  }
+  deactivateNextTurnButton() {
+    this.$nextTurnButton.style.display = "none";
   }
   nextPlayer(color) {
+    this.currentPlayer = color;
     this.$playerMessage.style.display = "none";
     let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
     this.$playerName.textContent = `${colorName}! Your turn!`;

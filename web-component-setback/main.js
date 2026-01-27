@@ -8,11 +8,11 @@ import { Board } from "./models/board.js";
 import { Player } from "./models/player.js";
 
 const board = new Board();
-const players = new Map();
-players.set("red", "green");
-players.set("green", "yellow");
-players.set("yellow", "blue");
-players.set("blue", "red");
+//const players = new Map();
+//players.set("red", "green");
+//players.set("green", "yellow");
+//players.set("yellow", "blue");
+//players.set("blue", "red");
 
 //const players = [
 //  new Player(true, "red"),
@@ -37,14 +37,29 @@ container.addEventListener("game-start", (e) => {
     console.log("Game Started");
   }
 });
+container.addEventListener("next-turn", (e) => {
+  if (e.detail.previousPlayer) {
+    board.diceRoller.enableClick();
+    let nextPlayer = board.players.get(e.detail.previousPlayer);
+    console.log(
+      `Next Turn. Previous Player: ${e.detail.previousPlayer}, Next Player: ${nextPlayer}`,
+    );
+    board.turnOptions.nextPlayer(nextPlayer);
+  } else {
+    console.log(`Something went wrong with the next-turn event. ${e}`);
+  }
+});
 container.addEventListener("dice-rolled", (e) => {
   if (!board.isGameStarted) {
     console.log("somehow we left early");
     return;
   }
-  board.turnOptions.playerMessage(
-    `You rolled: ${board.diceRoller.diceRoll}| HomeCountRed: ${board.victoryCount("red")}`,
-  );
+
+  board.getOptions();
+
+  //board.turnOptions.playerMessage(
+  //  `You rolled: ${board.diceRoller.diceRoll}| HomeCountRed: ${board.victoryCount("red")}`,
+  //);
   // present player with choices, generate with Board, display in TurnOptions
   // It would be nice to disable the ability to roll the dice until the player has made a selection
 });
