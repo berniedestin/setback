@@ -20,6 +20,20 @@ template.innerHTML = `
       border-radius: 50%;
       border: 2px black solid;
       background-color: var(--background-color,white);
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .double-space {
+      box-shadow: 0px 0px 0.5rem 0.1rem magenta;
+    }
+    .enable-click {
+      cursor: pointer;
+    }
+    .disable-click {
+      pointer-events: none;
+      cursor: default;
     }
   </style>
   <div class="container">
@@ -36,12 +50,13 @@ class TravelSpace extends HTMLElement {
     // Internal state
     this._active = false;
     this._spaceNumber = 0;
-    this._isOccupied = false;
     this.occupied = "white";
+    this._isClickable = false;
 
     // Elements
     this.$container = this.shadowRoot.querySelector(".container");
     this.$circle = this.shadowRoot.querySelector(".circle");
+    this.$circle.classList.add("disable-click");
   }
   get spaceNumber() {
     return this._spaceNumber;
@@ -49,6 +64,24 @@ class TravelSpace extends HTMLElement {
 
   get isOccupied() {
     return this.occupied != "white";
+  }
+  setOccupied(color) {
+    this.style.setProperty("--background-color", color);
+    this.occupied = color;
+  }
+  enableClick() {
+    if (!this._isClickable) {
+      this.$circle.classList.add("enable-click");
+      this.$circle.classList.remove("disable-click");
+      this._isClickable = true;
+    }
+  }
+  disableClick() {
+    if (this._isClickable) {
+      this.$circle.classList.remove("enable-click");
+      this.$circle.classList.add("disable-click");
+      this._isClickable = false;
+    }
   }
   get isDoubleSpace() {
     return (
@@ -61,9 +94,6 @@ class TravelSpace extends HTMLElement {
   get currentColor() {
     this.occupied;
   }
-  changeColor(color) {
-    this.style.setProperty("--background-color", color);
-  }
 
   static get observedAttributes() {
     return ["area", "occupied"];
@@ -75,6 +105,8 @@ class TravelSpace extends HTMLElement {
       this._spaceNumber = Number(
         newValue.substring(newValue.length - 2, newValue.length),
       );
+      this.$circle.textContent = this._spaceNumber;
+      if (this.isDoubleSpace) this.$circle.classList.add("double-space");
     }
     if (name === "occupied") {
       this.style.setProperty("--background-color", newValue);

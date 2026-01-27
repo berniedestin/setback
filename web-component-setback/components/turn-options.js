@@ -88,6 +88,13 @@ class TurnOptions extends HTMLElement {
     this.$playerName.textContent = `${colorName}! Your turn!`;
     this.$playerName.style.color = `${color}`;
   }
+  addOptions(options) {
+    // this method may be unecessary along with the whole #options div
+    options.forEach((option) => {
+      const newOption = document.createElement("div");
+      newOption.textContent = `Move from `;
+    });
+  }
   playerMessage(message) {
     this.$playerMessage.style.display = "block";
     this.$playerMessage.textContent = message;

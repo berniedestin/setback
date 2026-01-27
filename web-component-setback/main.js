@@ -33,6 +33,7 @@ const container = document.querySelector("main");
 container.addEventListener("game-start", (e) => {
   if (e.detail.gameStart) {
     board.isGameStarted = true;
+    board.diceRoller.enableClick();
     console.log("Game Started");
   }
 });
@@ -47,6 +48,16 @@ container.addEventListener("dice-rolled", (e) => {
   // present player with choices, generate with Board, display in TurnOptions
   // It would be nice to disable the ability to roll the dice until the player has made a selection
 });
+
+// Roll > SelectMove >
+//                   || Roll > SelectMove > NextPlayer
+
+// TurnOption should be something like:
+// TurnOption {
+//    color
+//    from
+//    to
+// }
 
 //document.addEventListener()
 //turnButton.addEventListener("click", () => {

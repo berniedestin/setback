@@ -28,6 +28,10 @@ template.innerHTML = `
       cursor: pointer;
       font-weight: bold;
     }
+    .disable-click {
+      pointer-events: none;
+      cursor: default;
+    }
   </style>
   <div class="container">
     <button id="action-btn">6</button>
@@ -43,13 +47,27 @@ class DiceRoller extends HTMLElement {
     // Internal state
     this._active = false;
     this._currentRoll = 6;
+    this._isClickable = false;
 
     // Elements
     this.$container = this.shadowRoot.querySelector(".container");
     this.$button = this.shadowRoot.querySelector("#action-btn");
+    this.$button.classList.add("disable-click");
   }
   get diceRoll() {
     return this._currentRoll;
+  }
+  enableClick() {
+    if (!this._isClickable) {
+      this.$button.classList.remove("disable-click");
+      this._isClickable = true;
+    }
+  }
+  disableClick() {
+    if (this._isClickable) {
+      this.$button.classList.add("disable-click");
+      this._isClickable = false;
+    }
   }
   connectedCallback() {
     // Add event listener for click/press
@@ -75,6 +93,7 @@ class DiceRoller extends HTMLElement {
         composed: true,
       }),
     );
+    this.disableClick();
   }
 
   static get observedAttributes() {
