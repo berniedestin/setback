@@ -122,6 +122,13 @@ class TurnOptions extends HTMLElement {
     this.$playerMessage.style.display = "block";
     this.$playerMessage.textContent = message;
   }
+  victory(color) {
+    this.deactivateNextTurnButton();
+    this.$playerMessage.style.display = "none";
+    let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
+    this.$playerName.textContent = `${colorName}! You WON!!`;
+    this.$playerName.style.color = `${color}`;
+  }
 
   turn(player, rollNum) {
     //unfinished, don't know if it should be here or in the main file

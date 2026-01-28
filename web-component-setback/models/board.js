@@ -63,6 +63,8 @@ export class Board {
     console.log(
       `Got inside unlock valid moves for color ${this.currentPlayer}`,
     );
+    let unlockCount = 0;
+
     let startSpaceFree = true;
     let startSpace = this._redStart;
     if (this.currentPlayer == "green") {
@@ -92,6 +94,7 @@ export class Board {
           space.getAttribute("occupied") == this.currentPlayer
         ) {
           space.enableClick();
+          unlockCount++;
         }
       });
     }
@@ -102,19 +105,39 @@ export class Board {
         this.checkValidMove(space.spaceNumber)
       ) {
         space.enableClick();
+        unlockCount++;
       }
     });
+
+    if (unlockCount == 0) {
+      this.turnOptions.playerMessage(
+        `You rolled: ${this.diceRoller.diceRoll}, but there are no valid moves!`,
+      );
+      this.turnOptions.activateNextTurnButton();
+    }
   }
   getNormalizedNumber(number) {
     let normalizedNumber = 0;
     if (this.currentPlayer == "red") {
       normalizedNumber = number;
     } else if (this.currentPlayer == "green") {
-      normalizedNumber = number - this._greenVictory;
+      if (number <= this._greenVictory) {
+        normalizedNumber = number + 28 - this._greenVictory;
+      } else {
+        normalizedNumber = number - this._greenVictory;
+      }
     } else if (this.currentPlayer == "yellow") {
-      normalizedNumber = number - this._yellowVictory;
+      if (number <= this._yellowVictory) {
+        normalizedNumber = number + 28 - this._yellowVictory;
+      } else {
+        normalizedNumber = number - this._yellowVictory;
+      }
     } else if (this.currentPlayer == "blue") {
-      normalizedNumber = number - this._blueVictory;
+      if (number <= this._blueVictory) {
+        normalizedNumber = number + 28 - this._blueVictory;
+      } else {
+        normalizedNumber = number - this._blueVictory;
+      }
     }
     return normalizedNumber;
   }
@@ -137,7 +160,7 @@ export class Board {
         if (
           space.getAttribute("owner") == this.currentPlayer &&
           space.getAttribute("occupied") == this.currentPlayer &&
-          space.spaceNumber == vicotrySpace
+          space.spaceNumber == victorySpace
         ) {
           isValid = false;
         }
@@ -150,8 +173,9 @@ export class Board {
         space.spaceNumber == number + this.diceRoller.diceRoll &&
         space.getAttribute("occupied") == this.currentPlayer
       ) {
-        console.log(`Would Land on same color. Space #${space.spaceNumber}`);
-        isValid == false;
+        console.log(`Would Land on same color. From Space #${number}`);
+        isValid = false;
+        return isValid;
       }
     });
     return isValid;
@@ -267,6 +291,24 @@ export class Board {
     let normalizedNumber = this.getNormalizedNumber(number);
     if (normalizedNumber + this.diceRoller.diceRoll > 28) {
       // do something to put pice into victory row
+      let victoryNumber = normalizedNumber + this.diceRoller.diceRoll - 28;
+      this.victorySpaces.forEach((space) => {
+        if (
+          space.getAttribute("owner") == this.currentPlayer &&
+          space.getAttribute("occupied") == "white" &&
+          space.spaceNumber == victoryNumber
+        ) {
+          space.setAttribute("occupied", this.currentPlayer);
+        }
+      });
+
+      // remove piece
+      this.travelSpaces.forEach((space) => {
+        if (space.spaceNumber == number) {
+          space.setAttribute("occupied", "white");
+        }
+      });
+
       return;
     }
 
@@ -294,5 +336,12 @@ export class Board {
         space.setAttribute("occupied", this.currentPlayer);
       }
     });
+  }
+  victoryConditionMet() {
+    let winner = this.victoryCount(this.currentPlayer) == 4;
+    if (winner) {
+      this.isWinner = true;
+      this.turnOptions.victory(this.currentPlayer);
+    }
   }
 }

@@ -28,10 +28,24 @@ template.innerHTML = `
     }
     .enable-click {
       cursor: pointer;
+
+      transform: scale(1);
+      animation: pulse 1.5s infinite;
     }
     .disable-click {
       pointer-events: none;
       cursor: default;
+    }
+    @keyframes pulse {
+      0%{
+        transform: scale(0.95);
+      }
+      70%{
+        transform: scale(1.2);
+      }
+      100%{
+        transform: scale(0.95);
+      }
     }
   </style>
   <div class="container">

@@ -38,6 +38,9 @@ container.addEventListener("game-start", (e) => {
   }
 });
 container.addEventListener("next-turn", (e) => {
+  if (board.isWinner) {
+    return;
+  }
   if (e.detail.previousPlayer) {
     board.canRollAgain = true;
     board.landedOnDouble = false;
@@ -53,6 +56,9 @@ container.addEventListener("next-turn", (e) => {
   }
 });
 container.addEventListener("select-piece", (e) => {
+  if (board.isWinner) {
+    return;
+  }
   console.log(`Location: ${e.detail.pieceLocation}`);
   console.log(`Number: ${e.detail.spaceNumber}`);
   // if location is home, take from home row
@@ -79,8 +85,12 @@ container.addEventListener("select-piece", (e) => {
   } else {
     board.turnOptions.activateNextTurnButton();
   }
+  board.victoryConditionMet();
 });
 container.addEventListener("dice-rolled", (e) => {
+  if (board.isWinner) {
+    return;
+  }
   if (!board.isGameStarted) {
     console.log("somehow we left early");
     return;
