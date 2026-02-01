@@ -4,6 +4,7 @@ import "./components/travel-space.js";
 import "./components/home-space.js";
 import "./components/victory-space.js";
 import "./components/turn-options.js";
+import "./components/start-menu.js";
 import { Board } from "./models/board.js";
 import { Player } from "./models/player.js";
 
