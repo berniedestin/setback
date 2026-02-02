@@ -1,3 +1,4 @@
+import "./player-name.js";
 const template = document.createElement("template");
 
 // Defining HTML-like syntax using backticks
@@ -11,6 +12,9 @@ template.innerHTML = `
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+    #menu-title {
+      font-size: 2.5rem;
     }
     .button {
       background-color: white;
@@ -29,10 +33,11 @@ template.innerHTML = `
     }
   </style>
   <div id="menu-container">
-    <div id="red" class="player">Red</div>
-    <div id="green" class="player">Green</div>
-    <div id="yellow" class="player">Yellow</div>
-    <div id="blue" class="player">Blue</div>
+    <div id="menu-title">Enter Player Names!</div>
+    <player-name color="red"></player-name>
+    <player-name color="green"></player-name>
+    <player-name color="yellow"></player-name>
+    <player-name color="blue"></player-name>
     <div id="ready" class="button">Ready!</div>
   </div>
 `;
