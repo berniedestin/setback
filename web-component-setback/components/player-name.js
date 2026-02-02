@@ -1,3 +1,5 @@
+import { Player } from "../models/player.js";
+
 const template = document.createElement("template");
 
 // Defining HTML-like syntax using backticks
@@ -44,6 +46,21 @@ class PlayerName extends HTMLElement {
     this.$textInput = this.shadowRoot.querySelector(".name");
     this.$legend = this.shadowRoot.querySelector("legend");
   }
+  connectedCallback() {
+    this.$textInput.addEventListener("input", (e) => {
+      //console.log(`The new value: ${e.target.value}`);
+      this._playerName = e.target.value;
+      this.isValidInput = this._playerName != "";
+    });
+  }
+  get getPlayer() {
+    return this.isValidInput
+      ? new Player(true, this._colorName.toLowerCase(), this._playerName)
+      : null;
+  }
+  get colorName() {
+    return this._colorName;
+  }
   toggleDisabled() {
     this.$textInput.disabled = !this.$textInput.disabled;
   }
@@ -55,9 +72,6 @@ class PlayerName extends HTMLElement {
       this.style.setProperty("--player-color", newValue);
       this._colorName = `${newValue.charAt(0).toUpperCase()}${newValue.slice(1)}`;
       this.$legend.textContent = this._colorName;
-      console.log(
-        `The color name for player-name element is ${this._colorName}`,
-      );
     }
   }
 }

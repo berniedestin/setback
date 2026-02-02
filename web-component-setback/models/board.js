@@ -1,6 +1,7 @@
 //import { TurnResult } from "./turn-result";
 
-export class Board {
+class Board {
+  //export class Board {
   constructor() {
     this.homeSpaces = document.querySelectorAll("home-space");
     this.victorySpaces = document.querySelectorAll("victory-space");
@@ -22,13 +23,14 @@ export class Board {
     this.isWinner = false;
     this.isGameStarted = false;
 
-    this.players = new Map();
+    this.players = []; /*new Map();
     this.players.set("red", "green");
     this.players.set("green", "yellow");
     this.players.set("yellow", "blue");
     this.players.set("blue", "red");
+    */
 
-    this.currentPlayer = "red";
+    //this.currentPlayer = "red";
     this.canRollAgain = true;
     this.landedOnDouble = false;
   }
@@ -61,23 +63,23 @@ export class Board {
   }
   unlockValidMoves() {
     console.log(
-      `Got inside unlock valid moves for color ${this.currentPlayer}`,
+      `Got inside unlock valid moves for color ${this.currentPlayer.color}`,
     );
     let unlockCount = 0;
 
     let startSpaceFree = true;
     let startSpace = this._redStart;
-    if (this.currentPlayer == "green") {
+    if (this.currentPlayer.color == "green") {
       startSpace = this._greenStart;
-    } else if (this.currentPlayer == "yellow") {
+    } else if (this.currentPlayer.color == "yellow") {
       startSpace = this._yellowStart;
-    } else if (this.currentPlayer == "blue") {
+    } else if (this.currentPlayer.color == "blue") {
       startSpace = this._blueStart;
     }
     this.travelSpaces.forEach((space) => {
       if (
         space.spaceNumber == startSpace &&
-        space.getAttribute("occupied") == this.currentPlayer
+        space.getAttribute("occupied") == this.currentPlayer.color
       ) {
         startSpaceFree = false;
       }
@@ -90,8 +92,8 @@ export class Board {
     ) {
       this.homeSpaces.forEach((space) => {
         if (
-          space.getAttribute("owner") == this.currentPlayer &&
-          space.getAttribute("occupied") == this.currentPlayer
+          space.getAttribute("owner") == this.currentPlayer.color &&
+          space.getAttribute("occupied") == this.currentPlayer.color
         ) {
           space.enableClick();
           unlockCount++;
@@ -101,7 +103,7 @@ export class Board {
     // unlock all others that wouldn't land on your own piece and wouldn't exceed the victory row
     this.travelSpaces.forEach((space) => {
       if (
-        space.getAttribute("occupied") == this.currentPlayer &&
+        space.getAttribute("occupied") == this.currentPlayer.color &&
         this.checkValidMove(space.spaceNumber)
       ) {
         space.enableClick();
@@ -118,21 +120,21 @@ export class Board {
   }
   getNormalizedNumber(number) {
     let normalizedNumber = 0;
-    if (this.currentPlayer == "red") {
+    if (this.currentPlayer.color == "red") {
       normalizedNumber = number;
-    } else if (this.currentPlayer == "green") {
+    } else if (this.currentPlayer.color == "green") {
       if (number <= this._greenVictory) {
         normalizedNumber = number + 28 - this._greenVictory;
       } else {
         normalizedNumber = number - this._greenVictory;
       }
-    } else if (this.currentPlayer == "yellow") {
+    } else if (this.currentPlayer.color == "yellow") {
       if (number <= this._yellowVictory) {
         normalizedNumber = number + 28 - this._yellowVictory;
       } else {
         normalizedNumber = number - this._yellowVictory;
       }
-    } else if (this.currentPlayer == "blue") {
+    } else if (this.currentPlayer.color == "blue") {
       if (number <= this._blueVictory) {
         normalizedNumber = number + 28 - this._blueVictory;
       } else {
@@ -158,8 +160,8 @@ export class Board {
       let victorySpace = normalizedNumber + this.diceRoller.diceRoll - endSpace;
       this.victorySpaces.forEach((space) => {
         if (
-          space.getAttribute("owner") == this.currentPlayer &&
-          space.getAttribute("occupied") == this.currentPlayer &&
+          space.getAttribute("owner") == this.currentPlayer.color &&
+          space.getAttribute("occupied") == this.currentPlayer.color &&
           space.spaceNumber == victorySpace
         ) {
           isValid = false;
@@ -171,7 +173,7 @@ export class Board {
     this.travelSpaces.forEach((space) => {
       if (
         space.spaceNumber == number + this.diceRoller.diceRoll &&
-        space.getAttribute("occupied") == this.currentPlayer
+        space.getAttribute("occupied") == this.currentPlayer.color
       ) {
         console.log(`Would Land on same color. From Space #${number}`);
         isValid = false;
@@ -187,7 +189,7 @@ export class Board {
     // make home space white
     this.homeSpaces.forEach((space) => {
       if (
-        space.getAttribute("owner") == this.currentPlayer &&
+        space.getAttribute("owner") == this.currentPlayer.color &&
         space.spaceNumber == number
       ) {
         space.setAttribute("occupied", "white");
@@ -196,13 +198,13 @@ export class Board {
 
     // set correct first space for each color
     let firstSpace = 0;
-    if (this.currentPlayer == "red") {
+    if (this.currentPlayer.color == "red") {
       firstSpace = this._redStart;
-    } else if (this.currentPlayer == "green") {
+    } else if (this.currentPlayer.color == "green") {
       firstSpace = this._greenStart;
-    } else if (this.currentPlayer == "yellow") {
+    } else if (this.currentPlayer.color == "yellow") {
       firstSpace = this._yellowStart;
-    } else if (this.currentPlayer == "blue") {
+    } else if (this.currentPlayer.color == "blue") {
       firstSpace = this._blueStart;
     }
 
@@ -220,7 +222,7 @@ export class Board {
     // make new space player color
     this.travelSpaces.forEach((space) => {
       if (space.spaceNumber == firstSpace) {
-        space.setAttribute("occupied", this.currentPlayer);
+        space.setAttribute("occupied", this.currentPlayer.color);
       }
     });
   }
@@ -250,7 +252,7 @@ export class Board {
     if (
       this.diceRoller.diceRoll != 6 &&
       this.diceRoller.diceRoll != 1 &&
-      this.homeCount(this.currentPlayer) == 4
+      this.homeCount(this.currentPlayer.color) == 4
     ) {
       //console.log(`Roll: ${this.diceRoller.diceRoll}`);
       //console.log(`Home Count: ${this.homeCount(this.currentPlayer)}`);
@@ -265,7 +267,7 @@ export class Board {
     // if 1 or 6 and have full home row and empty inital space, put one out
     if (
       (this.diceRoller.diceRoll == 6 || this.diceRoller.diceRoll == 1) &&
-      this.homeCount(this.currentPlayer) > 0
+      this.homeCount(this.currentPlayer.color) > 0
     ) {
       // allow player to click on occupied spaces in home row
       this.turnOptions.playerMessage(
@@ -275,7 +277,7 @@ export class Board {
     }
 
     // this means at least one is out
-    if (this.homeCount(this.currentPlayer) < 4) {
+    if (this.homeCount(this.currentPlayer.color) < 4) {
       this.turnOptions.playerMessage(
         `You rolled: ${this.diceRoller.diceRoll}, please select a piece to move!`,
       );
@@ -294,11 +296,11 @@ export class Board {
       let victoryNumber = normalizedNumber + this.diceRoller.diceRoll - 28;
       this.victorySpaces.forEach((space) => {
         if (
-          space.getAttribute("owner") == this.currentPlayer &&
+          space.getAttribute("owner") == this.currentPlayer.color &&
           space.getAttribute("occupied") == "white" &&
           space.spaceNumber == victoryNumber
         ) {
-          space.setAttribute("occupied", this.currentPlayer);
+          space.setAttribute("occupied", this.currentPlayer.color);
         }
       });
 
@@ -333,15 +335,17 @@ export class Board {
           // this should only trigger for not current color
           this.addToHome(space.getAttribute("occupied"));
         }
-        space.setAttribute("occupied", this.currentPlayer);
+        space.setAttribute("occupied", this.currentPlayer.color);
       }
     });
   }
   victoryConditionMet() {
-    let winner = this.victoryCount(this.currentPlayer) == 4;
+    let winner = this.victoryCount(this.currentPlayer.color) == 4;
     if (winner) {
       this.isWinner = true;
       this.turnOptions.victory(this.currentPlayer);
     }
   }
 }
+
+export const board = new Board();

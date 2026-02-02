@@ -5,10 +5,11 @@ import "./components/home-space.js";
 import "./components/victory-space.js";
 import "./components/turn-options.js";
 import "./components/start-menu.js";
-import { Board } from "./models/board.js";
+//import { Board } from "./models/board.js";
+import { board } from "./models/board.js";
 import { Player } from "./models/player.js";
 
-const board = new Board();
+//const board = new Board();
 //const players = new Map();
 //players.set("red", "green");
 //players.set("green", "yellow");
@@ -30,7 +31,20 @@ const board = new Board();
 
 // Mostly for debug
 const container = document.querySelector("main");
+const gridLayout = document.querySelector("#grid-layout");
+const startMenu = document.querySelector("start-menu");
+//const turnOptions = document.querySelector("turn-options");
 
+container.addEventListener("game-prepped", (e) => {
+  // Game is prepped to show board and begin button
+  //console.log(e.detail.players);
+  console.log("Game Prepped");
+  startMenu.style.display = "none";
+  gridLayout.style.display = "grid";
+  board.turnOptions.style.display = "block";
+  board.players = e.detail.players;
+  board.currentPlayer = board.players.find((player) => player.color == "red");
+});
 container.addEventListener("game-start", (e) => {
   if (e.detail.gameStart) {
     board.isGameStarted = true;
@@ -46,9 +60,14 @@ container.addEventListener("next-turn", (e) => {
     board.canRollAgain = true;
     board.landedOnDouble = false;
     board.diceRoller.enableClick();
-    let nextPlayer = board.players.get(e.detail.previousPlayer);
+    //let nextPlayer = board.players.get(e.detail.previousPlayer);
+    let nextPlayer = board.players.find(
+      (player) => player.color == e.detail.previousPlayer.nextColor,
+    );
+    console.log(nextPlayer);
+    console.log(board.currentPlayer);
     console.log(
-      `Next Turn. Previous Player: ${e.detail.previousPlayer}, Next Player: ${nextPlayer}`,
+      `Next Turn. Previous Player: ${e.detail.previousPlayer}, Next Player: ${nextPlayer.name}`,
     );
     board.turnOptions.nextPlayer(nextPlayer);
     board.currentPlayer = nextPlayer;

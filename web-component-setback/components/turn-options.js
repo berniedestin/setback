@@ -1,3 +1,5 @@
+import { board } from "../models/board.js";
+
 const template = document.createElement("template");
 
 // Defining HTML-like syntax using backticks
@@ -58,7 +60,7 @@ class TurnOptions extends HTMLElement {
     // Internal state
     this._active = false;
     this._gameStart = false;
-    this.currentPlayer = "";
+    //this.currentPlayer = "";
 
     // Elements
     this.$turnOptionsContainer = this.shadowRoot.querySelector("#turn-options");
@@ -71,12 +73,14 @@ class TurnOptions extends HTMLElement {
     // Add event listener for click/press
     this.$beginButton.addEventListener("click", () => {
       this._gameStart = true;
-      this.currentPlayer = "red";
+      board.currentPlayer = board.players.find(
+        (player) => player.color == "red",
+      );
 
       this.$beginButton.style.display = "none";
 
       this.$playerName.style.display = "block";
-      this.nextPlayer(this.currentPlayer);
+      this.nextPlayer(board.currentPlayer);
 
       this.dispatchEvent(
         new CustomEvent("game-start", {
@@ -91,7 +95,7 @@ class TurnOptions extends HTMLElement {
 
       this.dispatchEvent(
         new CustomEvent("next-turn", {
-          detail: { previousPlayer: this.currentPlayer },
+          detail: { previousPlayer: board.currentPlayer },
           bubbles: true,
           composed: true,
         }),
@@ -104,12 +108,12 @@ class TurnOptions extends HTMLElement {
   deactivateNextTurnButton() {
     this.$nextTurnButton.style.display = "none";
   }
-  nextPlayer(color) {
-    this.currentPlayer = color;
+  nextPlayer(player) {
+    //board.currentPlayer = player.color;
     this.$playerMessage.style.display = "none";
-    let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
-    this.$playerName.textContent = `${colorName}! Your turn!`;
-    this.$playerName.style.color = `${color}`;
+    //let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
+    this.$playerName.textContent = `${player.name}! Your turn!`;
+    this.$playerName.style.color = `${player.color}`;
   }
   addOptions(options) {
     // this method may be unecessary along with the whole #options div
@@ -122,12 +126,12 @@ class TurnOptions extends HTMLElement {
     this.$playerMessage.style.display = "block";
     this.$playerMessage.textContent = message;
   }
-  victory(color) {
+  victory(player) {
     this.deactivateNextTurnButton();
     this.$playerMessage.style.display = "none";
-    let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
-    this.$playerName.textContent = `${colorName}! You WON!!`;
-    this.$playerName.style.color = `${color}`;
+    //let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
+    this.$playerName.textContent = `${player.name}! You WON!!`;
+    this.$playerName.style.color = `${player.color}`;
   }
 
   turn(player, rollNum) {

@@ -14,8 +14,14 @@ main {
     font-weight: bold;
 }
 
+turn-options {
+    display: none;
+}
 #grid-layout {
+    display: none;
+    /*
     display: grid;
+    */
     grid-template-areas:
         ".    .    .    .    .    .    rh04 rh03 rh02 rh01 .    .    .    .    .    .   "
         ".    .    .    .    .    .    .    t028 t001 .    .    .    .    .    .    .   "
