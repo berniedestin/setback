@@ -11,7 +11,7 @@ template.innerHTML = `
     .player {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: end;
       border-block-color: var(--player-color,black);
       border-color: var(--player-color,black);
     }
@@ -27,6 +27,10 @@ template.innerHTML = `
   <fieldset class="player">
     <legend>Placeholder</legend>
     <input id="player-input" class="name" size="12" type="text" />
+    <div>
+      <input id="is-human" type="checkbox" name="is-human" />
+      <label for="is-human">Bot</label>
+    </div>
   </fieldset>
 `;
 
