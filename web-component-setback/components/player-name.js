@@ -45,9 +45,11 @@ class PlayerName extends HTMLElement {
     this._colorName = "";
     this._playerName = "";
     this.isValidInput = false;
+    this._isBot = false;
 
     // Elements
-    this.$textInput = this.shadowRoot.querySelector(".name");
+    this.$textInput = this.shadowRoot.querySelector("#player-input");
+    this.$isHumanInput = this.shadowRoot.querySelector("#is-human");
     this.$legend = this.shadowRoot.querySelector("legend");
   }
   connectedCallback() {
@@ -56,6 +58,13 @@ class PlayerName extends HTMLElement {
       this._playerName = e.target.value;
       this.isValidInput = this._playerName != "";
     });
+    this.$isHumanInput.addEventListener("change", (e) => {
+      this._isBot = !this._isBot;
+      // console.log(`${this._colorName} ${this._isBot ? "is" : "isn't"} a bot`);
+    });
+  }
+  get isBot() {
+    return this._isBot;
   }
   get getPlayer() {
     return this.isValidInput
