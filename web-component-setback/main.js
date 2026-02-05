@@ -50,9 +50,19 @@ container.addEventListener("game-start", (e) => {
     board.isGameStarted = true;
     board.diceRoller.enableClick();
     console.log("Game Started");
+    console.log(board.players);
+    // check for bot, resolve
+    if (!board.currentPlayer.isHuman) {
+      console.log(`Bot should CLICK DICE ROLLER`);
+      setTimeout(
+        board.currentPlayer.bot.clickDiceRoller,
+        board.currentPlayer.bot.waitTimeMili,
+      );
+    }
   }
 });
 container.addEventListener("next-turn", (e) => {
+  console.log(`!!!!!!! NEXT TURN EVENT FIRED !!!!!!!!`);
   if (board.isWinner) {
     return;
   }
@@ -64,23 +74,37 @@ container.addEventListener("next-turn", (e) => {
     let nextPlayer = board.players.find(
       (player) => player.color == e.detail.previousPlayer.nextColor,
     );
+    /*
     console.log(nextPlayer);
     console.log(board.currentPlayer);
+    */
     console.log(
-      `Next Turn. Previous Player: ${e.detail.previousPlayer}, Next Player: ${nextPlayer.name}`,
+      `Next Turn. Previous Player: ${e.detail.previousPlayer.name}, Next Player: ${nextPlayer.name}`,
     );
     board.turnOptions.nextPlayer(nextPlayer);
     board.currentPlayer = nextPlayer;
+
+    console.log(`VV NextPlayer VV`);
+    console.log(board.currentPlayer);
+    // bot logic
+    if (!board.currentPlayer.isHuman) {
+      console.log(`Bot should CLICK DICE ROLLER`);
+      setTimeout(
+        board.currentPlayer.bot.clickDiceRoller,
+        board.currentPlayer.bot.waitTimeMili,
+      );
+    }
   } else {
     console.log(`Something went wrong with the next-turn event. ${e}`);
   }
 });
 container.addEventListener("select-piece", (e) => {
+  console.log(`!!!!!!! SELECT PIECE EVENT FIRED !!!!!!!!`);
   if (board.isWinner) {
     return;
   }
-  console.log(`Location: ${e.detail.pieceLocation}`);
-  console.log(`Number: ${e.detail.spaceNumber}`);
+  //console.log(`Location: ${e.detail.pieceLocation}`);
+  //console.log(`Number: ${e.detail.spaceNumber}`);
   // if location is home, take from home row
   if (e.detail.pieceLocation == "home") {
     board.removeFromHome(e.detail.spaceNumber);
@@ -94,20 +118,44 @@ container.addEventListener("select-piece", (e) => {
   //
 
   board.lockAllPieces();
-  // if 6 or double roll, let roll again
-  if (
-    (board.diceRoller.diceRoll == 6 || board.landedOnDouble) &&
-    board.canRollAgain
-  ) {
-    board.diceRoller.enableClick();
-    board.turnOptions.playerMessage(`You can roll again, please roll!`);
-    board.canRollAgain = false;
-  } else {
-    board.turnOptions.activateNextTurnButton();
-  }
+
+  // reset choice array for bot
+  board.choices = [];
+
   board.victoryConditionMet();
+  if (!board.isWinner) {
+    // if 6 or double roll, let roll again
+    if (
+      (board.diceRoller.diceRoll == 6 || board.landedOnDouble) &&
+      board.canRollAgain
+    ) {
+      board.diceRoller.enableClick();
+      board.turnOptions.playerMessage(`You can roll again, please roll!`);
+      board.canRollAgain = false;
+      board.choices = [];
+      // bot logic
+      if (!board.currentPlayer.isHuman) {
+        console.log(`Bot should CLICK DICE ROLLER`);
+        setTimeout(
+          board.currentPlayer.bot.clickDiceRoller,
+          board.currentPlayer.bot.waitTimeMili,
+        );
+      }
+    } else {
+      board.turnOptions.activateNextTurnButton();
+      // bot logic
+      if (!board.currentPlayer.isHuman) {
+        console.log(`Bot should CLICK NEXT TURN`);
+        setTimeout(
+          board.currentPlayer.bot.clickNextTurn,
+          board.currentPlayer.bot.waitTimeMili,
+        );
+      }
+    }
+  }
 });
 container.addEventListener("dice-rolled", (e) => {
+  console.log(`!!!!!!! DICE ROLLED EVENT FIRED !!!!!!!!`);
   if (board.isWinner) {
     return;
   }
@@ -117,6 +165,24 @@ container.addEventListener("dice-rolled", (e) => {
   }
 
   board.getOptions();
+
+  // chech for bot
+  if (!board.currentPlayer.isHuman) {
+    if (board.choices.length == 0) {
+      console.log(`Bot should CLICK NEXT TURN`);
+      setTimeout(
+        board.currentPlayer.bot.clickNextTurn,
+        board.currentPlayer.bot.waitTimeMili,
+      );
+    } else {
+      console.log(`Bot should DECIDE --- ${board.currentPlayer.bot.type}`);
+      //console.log(board.currentPlayer.bot);
+      setTimeout(
+        board.currentPlayer.bot.decide,
+        board.currentPlayer.bot.waitTimeMili,
+      );
+    }
+  }
 
   //board.turnOptions.playerMessage(
   //  `You rolled: ${board.diceRoller.diceRoll}| HomeCountRed: ${board.victoryCount("red")}`,

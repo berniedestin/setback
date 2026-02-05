@@ -1,6 +1,11 @@
+import { Bot } from "./bot.js";
+
 // Not sure if this is necessary after using map to keep trak of next player
 export class Player {
   constructor(isHuman, color, name) {
+    if (!isHuman) {
+      this.bot = new Bot();
+    }
     this.isHuman = isHuman;
     this.color = color;
     this.name = name;

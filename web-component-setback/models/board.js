@@ -1,4 +1,5 @@
 //import { TurnResult } from "./turn-result";
+import { TurnChoice } from "./turn-choice.js";
 
 class Board {
   //export class Board {
@@ -33,6 +34,8 @@ class Board {
     //this.currentPlayer = "red";
     this.canRollAgain = true;
     this.landedOnDouble = false;
+
+    this.choices = [];
   }
   homeCount(color) {
     let count = 0;
@@ -62,10 +65,16 @@ class Board {
     // need to do the same for victory spaces
   }
   unlockValidMoves() {
+    this.choices = [];
+    /*
     console.log(
       `Got inside unlock valid moves for color ${this.currentPlayer.color}`,
     );
+    */
     let unlockCount = 0;
+
+    // create TurnChoice array
+    let willTakePiece = false;
 
     let startSpaceFree = true;
     let startSpace = this._redStart;
@@ -82,6 +91,11 @@ class Board {
         space.getAttribute("occupied") == this.currentPlayer.color
       ) {
         startSpaceFree = false;
+      } else if (
+        space.spaceNumber == startSpace &&
+        space.getAttribute("occupied") != "white"
+      ) {
+        willTakePiece = true;
       }
     });
 
@@ -96,6 +110,16 @@ class Board {
           space.getAttribute("occupied") == this.currentPlayer.color
         ) {
           space.enableClick();
+          this.choices.push(
+            new TurnChoice(
+              this.currentPlayer.color,
+              space.spaceNumber,
+              true,
+              29,
+              willTakePiece,
+              false,
+            ),
+          );
           unlockCount++;
         }
       });
@@ -107,15 +131,32 @@ class Board {
         this.checkValidMove(space.spaceNumber)
       ) {
         space.enableClick();
+        this.choices.push(
+          new TurnChoice(
+            this.currentPlayer.color,
+            space.spaceNumber,
+            false,
+            28 - this.getNormalizedNumber(space.spaceNumber),
+            this.wouldLandOnPiece(space.spaceNumber),
+            this.wouldLandOnEntrance(space.spaceNumber),
+          ),
+        );
         unlockCount++;
       }
     });
 
     if (unlockCount == 0) {
+      console.log(
+        `--There are no options! Choice count is:${this.choices.length}`,
+      );
       this.turnOptions.playerMessage(
         `You rolled: ${this.diceRoller.diceRoll}, but there are no valid moves!`,
       );
       this.turnOptions.activateNextTurnButton();
+    } else {
+      console.log(
+        `--There are some options! Choice count is:${this.choices.length}`,
+      );
     }
   }
   getNormalizedNumber(number) {
@@ -175,12 +216,64 @@ class Board {
         space.spaceNumber == number + this.diceRoller.diceRoll &&
         space.getAttribute("occupied") == this.currentPlayer.color
       ) {
-        console.log(`Would Land on same color. From Space #${number}`);
+        // console.log(`Would Land on same color. From Space #${number}`);
         isValid = false;
         return isValid;
       }
     });
     return isValid;
+  }
+  wouldLandOnPiece(number) {
+    let wouldLandOnPiece = false;
+
+    let endSpace = 28;
+    let normalizedNumber = this.getNormalizedNumber(number);
+
+    // because we know this will be a valid move,
+    // we just need to check that the move amount won't exceed
+    // the travel spaces into the victory row
+    // which would make landing on another color impossible
+    if (normalizedNumber + this.diceRoller.diceRoll > 28) {
+      return wouldLandOnPiece;
+    }
+
+    // would land on different color
+    this.travelSpaces.forEach((space) => {
+      if (
+        space.spaceNumber == number + this.diceRoller.diceRoll &&
+        space.getAttribute("occupied") != this.currentPlayer.color &&
+        space.getAttribute("occupied") != "white"
+      ) {
+        // console.log(`Would Land on same color. From Space #${number}`);
+        wouldLandOnPiece = true;
+        return wouldLandOnPiece;
+      }
+    });
+    return wouldLandOnPiece;
+  }
+  wouldLandOnEntrance(number) {
+    let wouldLandOnEntrance = false;
+
+    let endSpace = 28;
+    let normalizedNumber = this.getNormalizedNumber(number);
+
+    // because we know this will be a valid move,
+    // we just need to check that the move amount won't exceed
+    // the travel spaces into the victory row
+    // which would make landing on another color impossible
+    if (normalizedNumber + this.diceRoller.diceRoll > 28) {
+      return wouldLandOnEntrance;
+    }
+
+    if (
+      number + this.diceRoller.diceRoll == this._redStart ||
+      number + this.diceRoller.diceRoll == this._greenStart ||
+      number + this.diceRoller.diceRoll == this._yellowStart ||
+      number + this.diceRoller.diceRoll == this._blueStart
+    ) {
+      wouldLandOnEntrance = true;
+    }
+    return wouldLandOnEntrance;
   }
   removeFromHome(number) {
     // logic to remove one from color's home
@@ -227,7 +320,7 @@ class Board {
     });
   }
   addToHome(color) {
-    console.log(`AddToHome called for color: ${color}`);
+    //console.log(`AddToHome called for color: ${color}`);
     let addedSuccessfully = false;
     // logic to add piece back to color's home row after being landed on
     this.homeSpaces.forEach((space) => {

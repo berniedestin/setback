@@ -94,6 +94,9 @@ class TravelSpace extends HTMLElement {
     this.style.setProperty("--background-color", color);
     this.occupied = color;
   }
+  get isClickable() {
+    return this._isClickable;
+  }
   enableClick() {
     if (!this._isClickable) {
       this.$circle.classList.add("enable-click");

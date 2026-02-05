@@ -85,6 +85,9 @@ class HomeSpace extends HTMLElement {
   get spaceNumber() {
     return this._spaceNumber;
   }
+  get isClickable() {
+    return this._isClickable;
+  }
   enableClick() {
     if (!this._isClickable) {
       this.$circle.classList.add("enable-click");

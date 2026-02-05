@@ -68,7 +68,11 @@ class PlayerName extends HTMLElement {
   }
   get getPlayer() {
     return this.isValidInput
-      ? new Player(true, this._colorName.toLowerCase(), this._playerName)
+      ? new Player(
+          !this._isBot,
+          this._colorName.toLowerCase(),
+          this._playerName,
+        )
       : null;
   }
   get colorName() {
