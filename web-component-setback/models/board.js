@@ -439,6 +439,10 @@ class Board {
       this.turnOptions.victory(this.currentPlayer);
     }
   }
+  reset() {
+    // move all pieces back to home rows
+    // set turnOptions component back to status quo
+  }
 }
 
 export const board = new Board();

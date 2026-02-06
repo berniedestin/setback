@@ -19,7 +19,8 @@ template.innerHTML = `
       text-shadow: 0px 0px 0.9rem white;
     }
     #player-message,
-    #next-turn {
+    #next-turn,
+   #reset {
       display: none;
       font-size:2rem;
     }
@@ -47,6 +48,7 @@ template.innerHTML = `
     <div id="player-message"></div>
     <div id="begin" class="button">Begin!</div>
     <div id="next-turn" class="button">Next Turn!</div>
+    <div id="reset" class="button">Start Menu</div>
     <div id="options"></div>
   </div>
 `;
@@ -68,6 +70,7 @@ class TurnOptions extends HTMLElement {
     this.$playerMessage = this.shadowRoot.querySelector("#player-message");
     this.$beginButton = this.shadowRoot.querySelector("#begin");
     this.$nextTurnButton = this.shadowRoot.querySelector("#next-turn");
+    this.$resetButton = this.shadowRoot.querySelector("#reset");
   }
   connectedCallback() {
     // Add event listener for click/press
@@ -101,12 +104,26 @@ class TurnOptions extends HTMLElement {
         }),
       );
     });
+    this.$resetButton.addEventListener("click", () => {
+      this.$resetButton.style.display = "none";
+
+      this.dispatchEvent(
+        new CustomEvent("game-reset", {
+          detail: { resetGame: true },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    });
   }
   activateNextTurnButton() {
     this.$nextTurnButton.style.display = "block";
   }
   deactivateNextTurnButton() {
     this.$nextTurnButton.style.display = "none";
+  }
+  activateResetButton() {
+    this.$resetButton.style.display = "block";
   }
   nextPlayer(player) {
     //board.currentPlayer = player.color;
@@ -128,6 +145,7 @@ class TurnOptions extends HTMLElement {
   }
   victory(player) {
     this.deactivateNextTurnButton();
+    this.activateResetButton();
     this.$playerMessage.style.display = "none";
     //let colorName = `${color.charAt(0).toUpperCase()}${color.slice(1)}`;
     this.$playerName.textContent = `${player.name}! You WON!!`;

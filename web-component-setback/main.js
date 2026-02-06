@@ -183,6 +183,16 @@ container.addEventListener("dice-rolled", (e) => {
       );
     }
   }
+  container.addEventListener("game-reset", (e) => {
+    if (e.detail.resetGame) {
+      board.isGameStarted = false;
+      board.isWinner = false;
+      console.log("Game Reset");
+      startMenu.style.display = "block";
+      gridLayout.style.display = "none";
+      board.turnOptions.style.display = "none";
+    }
+  });
 
   //board.turnOptions.playerMessage(
   //  `You rolled: ${board.diceRoller.diceRoll}| HomeCountRed: ${board.victoryCount("red")}`,
