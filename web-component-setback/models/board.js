@@ -441,7 +441,21 @@ class Board {
   }
   reset() {
     // move all pieces back to home rows
-    // set turnOptions component back to status quo
+    this.homeSpaces.forEach((space) => {
+      if (space.getAttribute("occupied") != space.getAttribute("owner")) {
+        space.setAttribute("occupied", space.getAttribute("owner"));
+      }
+    });
+    this.victorySpaces.forEach((space) => {
+      if (space.getAttribute("occupied") == space.getAttribute("owner")) {
+        space.setAttribute("occupied", "white");
+      }
+    });
+    this.travelSpaces.forEach((space) => {
+      if (space.getAttribute("occupied") != "white") {
+        space.setAttribute("occupied", "white");
+      }
+    });
   }
 }
 

@@ -85,6 +85,12 @@ class StartMenu extends HTMLElement {
       }
     });
   }
+  reset() {
+    this.$menuTitle.textContent = "Enter Player Names!";
+    this.$playerInputs.forEach((input) => {
+      input.reset();
+    });
+  }
   // these two are not currently used
   activateReadyButton() {
     this.$readyButton.style.display = "block";

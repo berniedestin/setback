@@ -66,6 +66,13 @@ class PlayerName extends HTMLElement {
   get isBot() {
     return this._isBot;
   }
+  reset() {
+    this.$textInput.value = "";
+    this._playerName = "";
+    this.isValidInput = false;
+    this.$isHumanInput.checked = false;
+    this._isBot = false;
+  }
   get getPlayer() {
     return this.isValidInput
       ? new Player(

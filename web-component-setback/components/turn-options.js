@@ -105,7 +105,13 @@ class TurnOptions extends HTMLElement {
       );
     });
     this.$resetButton.addEventListener("click", () => {
+      // set turnOptions component back to status quo
       this.$resetButton.style.display = "none";
+      this.$nextTurnButton.style.display = "none";
+      this.$playerMessage.style.display = "none";
+      this.$playerName.style.display = "none";
+
+      this.$beginButton.style.display = "block";
 
       this.dispatchEvent(
         new CustomEvent("game-reset", {

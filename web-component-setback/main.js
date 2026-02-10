@@ -177,10 +177,12 @@ container.addEventListener("dice-rolled", (e) => {
     } else {
       console.log(`Bot should DECIDE --- ${board.currentPlayer.bot.type}`);
       //console.log(board.currentPlayer.bot);
+      console.log(board.choices);
       setTimeout(
         board.currentPlayer.bot.decide,
         board.currentPlayer.bot.waitTimeMili,
       );
+      console.log(board.choices);
     }
   }
   container.addEventListener("game-reset", (e) => {
@@ -188,6 +190,8 @@ container.addEventListener("dice-rolled", (e) => {
       board.isGameStarted = false;
       board.isWinner = false;
       console.log("Game Reset");
+      board.reset();
+      startMenu.reset();
       startMenu.style.display = "block";
       gridLayout.style.display = "none";
       board.turnOptions.style.display = "none";
