@@ -37,18 +37,40 @@ export class Bot {
       }
     }
 
+    let newChoiceOrder = board.currentPlayer.bot.#basicSort();
+
     // handle multiple choices based on personality
     if (board.currentPlayer.bot.type == "fast") {
-      board.currentPlayer.bot.#fast();
+      board.currentPlayer.bot.#fast(newChoiceOrder);
     } else if (board.currentPlayer.bot.type == "aggressive") {
-      board.currentPlayer.bot.#aggressive();
+      board.currentPlayer.bot.#aggressive(newChoiceOrder);
     } else if (board.currentPlayer.bot.type == "noneleft") {
-      board.currentPlayer.bot.#noneleft();
+      board.currentPlayer.bot.#noneleft(newChoiceOrder);
     }
   }
-  #fast() {
-    //console.log(`@@ DEBUG @@ Got inside #fast`);
+  #basicSort() {
     let newChoiceOrder = board.choices.sort((a, b) => {
+      return a.distanceToVictory - b.distanceToVictory;
+    });
+    newChoiceOrder = newChoiceOrder.sort((a, b) => {
+      if (
+        (a.willLandOnEntrance && b.willLandOnEntrance) ||
+        (!a.willLandOnEntrance && !b.willLandOnEntrance)
+      ) {
+        return 0;
+      }
+      if (a.willLandOnEntrance) {
+        return 1;
+      }
+      if (b.willLandOnEntrance) {
+        return -1;
+      }
+    });
+    return newChoiceOrder;
+  }
+  #fast(choiceOrder) {
+    //console.log(`@@ DEBUG @@ Got inside #fast`);
+    let newChoiceOrder = choiceOrder.sort((a, b) => {
       return a.distanceToVictory - b.distanceToVictory;
     });
     if (newChoiceOrder[0].fromHomeRow) {
@@ -57,9 +79,9 @@ export class Bot {
       board.currentPlayer.bot.clickTravelSpace(newChoiceOrder[0]);
     }
   }
-  #aggressive() {
+  #aggressive(choiceOrder) {
     //console.log(`@@ DEBUG @@ Got inside #aggressive`);
-    let newChoiceOrder = board.choices.sort((a, b) => {
+    let newChoiceOrder = choiceOrder.sort((a, b) => {
       // if the same
       if (
         (a.willTakePiece && b.willTakePiece) ||
@@ -80,9 +102,9 @@ export class Bot {
       board.currentPlayer.bot.clickTravelSpace(newChoiceOrder[0]);
     }
   }
-  #noneleft() {
+  #noneleft(choiceOrder) {
     // console.log(`@@ DEBUG @@ Got inside #noneleft`);
-    let newChoiceOrder = board.choices.sort((a, b) => {
+    let newChoiceOrder = choiceOrder.sort((a, b) => {
       if (
         (a.fromHomeRow && b.fromHomeRow) ||
         (!a.fromHomeRow && !b.fromHomeRow)

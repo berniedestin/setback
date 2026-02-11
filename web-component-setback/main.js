@@ -166,6 +166,7 @@ container.addEventListener("dice-rolled", (e) => {
 
   board.getOptions();
 
+  console.log(board.choices);
   // chech for bot
   if (!board.currentPlayer.isHuman) {
     if (board.choices.length == 0) {
@@ -177,7 +178,6 @@ container.addEventListener("dice-rolled", (e) => {
     } else {
       console.log(`Bot should DECIDE --- ${board.currentPlayer.bot.type}`);
       //console.log(board.currentPlayer.bot);
-      console.log(board.choices);
       setTimeout(
         board.currentPlayer.bot.decide,
         board.currentPlayer.bot.waitTimeMili,
