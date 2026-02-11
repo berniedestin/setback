@@ -265,11 +265,16 @@ class Board {
       return wouldLandOnEntrance;
     }
 
+    let landNumber =
+      number + this.diceRoller.diceRoll > 28
+        ? number + this.diceRoller.diceRoll - 28
+        : number + this.diceRoller.diceRoll;
+
     if (
-      number + this.diceRoller.diceRoll == this._redStart ||
-      number + this.diceRoller.diceRoll == this._greenStart ||
-      number + this.diceRoller.diceRoll == this._yellowStart ||
-      number + this.diceRoller.diceRoll == this._blueStart
+      landNumber == this._redStart ||
+      landNumber == this._greenStart ||
+      landNumber == this._yellowStart ||
+      landNumber == this._blueStart
     ) {
       wouldLandOnEntrance = true;
     }
