@@ -133,7 +133,8 @@ class TravelSpace extends HTMLElement {
       this._spaceNumber = Number(
         newValue.substring(newValue.length - 2, newValue.length),
       );
-      this.$circle.textContent = this._spaceNumber;
+      // Don't need numbers in actual game
+      //this.$circle.textContent = this._spaceNumber;
       if (this.isDoubleSpace) this.$circle.classList.add("double-space");
     }
     if (name === "occupied") {

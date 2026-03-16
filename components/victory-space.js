@@ -84,7 +84,8 @@ class VictorySpace extends HTMLElement {
       this._spaceNumber = Number(
         newValue.substring(newValue.length - 2, newValue.length),
       );
-      this.$circle.textContent = this._spaceNumber;
+      // Don't need number on space
+      //this.$circle.textContent = this._spaceNumber;
     }
     if (name === "occupied") {
       this.style.setProperty("--background-color", newValue);
